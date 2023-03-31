@@ -1,0 +1,30 @@
+{
+    "schema": "2.0",
+    "header": {
+        "event_id": "1e73309eafd9782299879866b959yyyy",
+        "token": "[FILTERED]",
+        "create_time": "1680319736678",
+        "event_type": "im.message.receive_v1",
+        "tenant_key": "[FILTERED]",
+        "app_id": "cli_a4876bf3df38xxxx"
+    },
+    "event": {
+        "message": {
+            "chat_id": "oc_d8968995952c182e7adf169e2c3czzzz",
+            "chat_type": "p2p",
+            "content": "{\"text\":\"rails \\u5982\\u4f55\\u5728 lib \\u4e0b\\u6dfb\\u52a0\\u81ea\\u5b9a\\u4e49\\u6a21\\u5757\\uff0c\\u5e76\\u5728initializer\\u4e2d\\u521d\\u59cb\\u5316\"}",
+            "create_time": "1680319736423",
+            "message_id": "om_09463fc930bb51f0408d48bc4e5dwwww",
+            "message_type": "text"
+        },
+        "sender": {
+            "sender_id": {
+                "open_id": "ou_bbf0db2cb5f5ff139267d730f7ecuuuu",
+                "union_id": "on_f855982bd9d2adce57a87168f91evvvv",
+                "user_id": "e83essss"
+            },
+            "sender_type": "user",
+            "tenant_key": "[FILTERED]"
+        }
+    }
+}
