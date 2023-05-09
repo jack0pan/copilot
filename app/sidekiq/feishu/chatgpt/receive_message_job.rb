@@ -3,7 +3,7 @@ class Feishu::ChatGPT::ReceiveMessageJob
 
   def perform(message_json)
     openai_client = OpenAI::Client.new
-    feishu_client = Feishu::Client.new
+    feishu_client = Feishu::ChatGPT.new
 
     message = JSON.parse(message_json)
 
@@ -17,7 +17,9 @@ class Feishu::ChatGPT::ReceiveMessageJob
 
     feishu_client.reply_message(
       message["message_id"],
-      { text: response.dig("choices", 0, "message", "content") }
+      {
+        text: JSON.parse(response.body).dig("choices", 0, "message", "content")
+      }
     )
   end
 
