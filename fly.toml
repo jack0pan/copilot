@@ -1,47 +1,49 @@
-# fly.toml file generated for copilot-sjc on 2023-04-09T21:02:44+08:00
+# fly.toml app configuration file generated for copilot-sjc on 2023-06-04T21:43:32+08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
 app = "copilot-sjc"
-kill_signal = "SIGINT"
-kill_timeout = 5
 primary_region = "sjc"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+console_command = "/rails/bin/rails console"
+
+[experimental]
+  auto_rollback = true
+
+[deploy]
+  release_command = "bin/rails db:prepare"
 
 [processes]
   web = "bin/rails server"
   worker = "bin/bundle exec sidekiq"
 
-[deploy]
-  release_command = "bin/rails db:prepare"
-
-[env]
-
-[experimental]
-  auto_rollback = true
-
 [[services]]
-  http_checks = []
+  protocol = "tcp"
   internal_port = 3000
   processes = ["web"]
-  protocol = "tcp"
-  script_checks = []
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+    tls_options = { "alpn" = ["h2", "http/1.1"], "versions" = ["TLSv1.2", "TLSv1.3"] }
+
   [services.concurrency]
+    type = "connections"
     hard_limit = 25
     soft_limit = 20
-    type = "connections"
-
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
 
   [[services.tcp_checks]]
-    grace_period = "1s"
     interval = "15s"
-    restart_limit = 0
     timeout = "2s"
+    grace_period = "1s"
+    restart_limit = 0
 
 [[statics]]
   guest_path = "/rails/public"

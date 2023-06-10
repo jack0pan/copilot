@@ -14,4 +14,5 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "ChatGPT"
   inflect.acronym "DALLE"
+  inflect.acronym "OpenAI"
 end

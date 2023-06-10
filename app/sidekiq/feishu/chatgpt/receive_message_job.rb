@@ -2,23 +2,25 @@ class Feishu::ChatGPT::ReceiveMessageJob
   include Sidekiq::Job
 
   def perform(message_json)
-    openai_client = OpenAI::Client.new
+    # openai_client = OpenAI::Client.new
+    openai_client = Azure::OpenAI::Client.new
     feishu_client = Feishu::ChatGPT.new
 
     message = JSON.parse(message_json)
 
-    response =
-      openai_client.chat(
-        parameters: {
-          model: "gpt-3.5-turbo",
-          messages: chat_messages(message, feishu_client)
-        }
-      )
+    # response =
+    #   openai_client.chat(
+    #     parameters: {
+    #       model: "gpt-3.5-turbo",
+    #       messages: chat_messages(message, feishu_client)
+    #     }
+    #   )
+    response = openai_client.create_chat_completion(chat_messages(message, feishu_client))
 
     feishu_client.reply_message(
       message["message_id"],
       {
-        text: JSON.parse(response.body).dig("choices", 0, "message", "content")
+        text: response.body.dig("choices", 0, "message", "content")
       }
     )
   end
