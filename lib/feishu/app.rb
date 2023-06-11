@@ -16,7 +16,7 @@ module Feishu
       attr_accessor :uri
       attr_writer :app_id, :app_secret
 
-      DEFAULT_URI = "https://open.feishu.cn/open-apis".freeze
+      DEFAULT_URI = "https://open.feishu.cn".freeze
 
       def initialize(app_id = nil, app_secret = nil, uri = nil)
         @app_id = app_id if app_id
@@ -62,7 +62,15 @@ module Feishu
     end
 
     def multipart_conn
-      Faraday.new() do |f|
+      token = internal_tenant_access_token()
+
+      Faraday.new(
+        url: self.class.configuration.uri,
+        headers: {
+          'Authorization' => "Bearer #{token}",
+          'User-Agent' => "FeishuRuby/0.0.1"
+        }
+      ) do |f|
         f.request :multipart
         f.response :json
       end

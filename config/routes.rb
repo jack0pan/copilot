@@ -6,6 +6,9 @@ Rails.application.routes.draw do
     namespace :chatgpt do
       resources :events, only: [:create]
     end
+    namespace :stable_diffusion do
+      resources :events, only: [:create]
+    end
   end
   namespace :api do
     namespace :v1 do

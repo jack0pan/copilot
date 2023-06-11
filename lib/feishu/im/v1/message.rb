@@ -5,7 +5,7 @@ module Feishu
         def get_message(message_id)
           response =
             json_conn.get do |req|
-              req.url "#{self.class.configuration.uri}/im/v1/messages/#{message_id}"
+              req.url "#{self.class.configuration.uri}/open-apis/im/v1/messages/#{message_id}"
               req.headers[
                 "Authorization"
               ] = "Bearer #{internal_tenant_access_token}"
@@ -15,7 +15,7 @@ module Feishu
 
         def reply_message(message_id, content, message_type = "text")
           json_conn.post do |req|
-            req.url "#{self.class.configuration.uri}/im/v1/messages/#{message_id}/reply"
+            req.url "#{self.class.configuration.uri}/open-apis/im/v1/messages/#{message_id}/reply"
             req.headers[
               "Authorization"
             ] = "Bearer #{internal_tenant_access_token}"

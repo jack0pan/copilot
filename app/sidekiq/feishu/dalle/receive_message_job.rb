@@ -10,7 +10,7 @@ class Feishu::DALLE::ReceiveMessageJob
     prompt = JSON.parse(message["content"])["text"]
     response = openai_client.images.generate(parameters: { prompt: prompt })
     image_url = response.dig("data", 0, "url")
-    image_key = dalle_client.upload_image(image_url)
+    image_key = dalle_client.upload_image_by_url(image_url)
     dalle_client.reply_message(
       message_id,
       { "image_key" => image_key },

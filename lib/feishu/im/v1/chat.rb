@@ -5,7 +5,7 @@ module Feishu
         def get_chat(chat_id)
           response =
             json_conn.get do |req|
-              req.url "#{self.class.configuration.uri}/im/v1/chats/#{chat_id}"
+              req.url "#{self.class.configuration.uri}/open-apis/im/v1/chats/#{chat_id}"
               req.headers[
                 "Authorization"
               ] = "Bearer #{internal_tenant_access_token}"

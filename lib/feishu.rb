@@ -2,6 +2,7 @@ require_relative "feishu/client"
 require_relative "feishu/app"
 require_relative "feishu/chatgpt"
 require_relative "feishu/dalle"
+require_relative "feishu/stable_diffusion"
 
 module Feishu
   class Configuration
