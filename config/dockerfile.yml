@@ -7,7 +7,7 @@ options:
   label:
     fly_launch_runtime: rails
   parallel: true
-  postgresql: true
+  precompile: defer
   prepare: false
   redis: true
   yjit: true

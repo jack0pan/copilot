@@ -2,7 +2,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.1
-FROM ruby:$RUBY_VERSION-slim as base
+FROM ruby:$RUBY_VERSION-slim
 
 LABEL fly_launch_runtime="rails"
 
@@ -18,15 +18,11 @@ ENV RAILS_ENV="production" \
 RUN gem update --system --no-document && \
     gem install -N bundler
 
-
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
 # Install packages needed to build gems
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential libpq-dev
+    apt-get install --no-install-recommends -y build-essential
 
 # Install application gems
 COPY --link Gemfile Gemfile.lock ./
@@ -46,18 +42,6 @@ COPY --link . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE=DUMMY ./bin/rails assets:precompile
-
-
-# Final stage for app image
-FROM base
-
-# Install packages needed for deployment
-RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
-    --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
-    apt-get update -qq && \
-    apt-get install --no-install-recommends -y postgresql-client
 
 # Run and own the application files as a non-root user for security
 ARG UID=1000 \
@@ -65,10 +49,6 @@ ARG UID=1000 \
 RUN groupadd -f -g $GID rails && \
     useradd -u $UID -g $GID rails --home /rails --shell /bin/bash
 USER rails:rails
-
-# Copy built artifacts: gems, application
-COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build --chown=rails:rails /rails /rails
 
 # Deployment options
 ENV RAILS_LOG_TO_STDOUT="1" \
