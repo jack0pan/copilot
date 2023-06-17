@@ -12,8 +12,8 @@ console_command = "/rails/bin/rails console"
 [experimental]
   auto_rollback = true
 
-[deploy]
-  release_command = "bin/rails db:prepare"
+# [deploy]
+#   release_command = "bin/rails db:prepare"
 
 [processes]
   web = "bin/rails server"
