@@ -3,6 +3,7 @@ services:
     name: copilot-redis
     region: oregon
     maxmemoryPolicy: noeviction
+    ipAllowList: []
 
   - type: worker
     name: copilot-worker
