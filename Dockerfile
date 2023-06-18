@@ -48,6 +48,7 @@ ARG UID=1000 \
     GID=1000
 RUN groupadd -f -g $GID rails && \
     useradd -u $UID -g $GID rails --home /rails --shell /bin/bash
+RUN chown -R rails:rails log tmp
 USER rails:rails
 
 # Deployment options
