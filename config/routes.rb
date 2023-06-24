@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   namespace :feishu do
+    post "/:app/events", to: "events#create"
+    
     namespace :dalle do
       resources :events, only: [:create]
     end

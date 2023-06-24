@@ -39,11 +39,11 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "dockerfile-rails", ">= 1.2"
+  gem "rubocop", require: false
 end
 
 gem "sidekiq", "~> 7.0"
-
-gem "dockerfile-rails", ">= 1.2", group: :development
 
 gem "faraday", "~> 2.7"
 
